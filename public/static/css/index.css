@@ -1,0 +1,117 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.menu{
+    display: none;
+}
+a{
+    text-decoration: none;
+}
+body{
+    padding: 0 3rem;
+}
+
+main{
+    padding: 0 3rem;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    font-family: cursive;
+}
+
+h1 span{
+    color: red;
+}
+ul{
+    font-size: 18px;
+}
+li{
+    font-family: monospace;
+    list-style: none;
+    padding: .5rem;
+    margin: .5rem;
+}
+main a{
+    background: linear-gradient(to right, red,blue);
+    padding: .5rem;
+    font-size: 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: 700;
+}
+
+form>div{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: .5rem;
+}
+form input{
+    padding: .5rem;
+    border-radius: .2rem;
+    border: 1px solid gray;
+}
+form input[type='submit']{
+    font-size: 1rem;
+    background:linear-gradient(to bottom, blue,red);
+    color: white;
+    margin-top: 1rem;
+    border: none;
+    
+}
+form{
+    margin-bottom: 1rem;
+}
+dialog{
+    margin: auto;
+    padding: 1rem;
+    border: none;
+    min-height: 70vh;
+    background-color: gainsboro;
+}
+dialog h2{
+    margin: .5rem 0 1rem 0;
+    display: flex;
+    justify-content: space-between;
+}
+#login-dialog{
+    min-height: 50vh;
+}
+#menu{
+    display: none;
+}
+#menu-nav{
+    display: none;
+}
+@media screen and (max-width:767px) {
+    body{
+        padding: 0 1.5rem;
+    }
+    #navigation{
+        display: none;
+    }
+    #menu{
+        display: block;
+        align-content: end;
+    }
+    #menu-nav{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        min-height: 70vh;
+        font-size: 1.3rem;
+        background-color: gainsboro;
+        display: none;
+    }
+    #menu-nav a{
+        color: black;
+        text-align: center;
+    }
+    main{
+        padding: 0 1.5rem;
+    }
+    
+}

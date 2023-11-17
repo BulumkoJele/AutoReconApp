@@ -1,0 +1,60 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+p{
+    padding: .5rem 0;
+}
+body{
+    font-family: cursive;
+    padding: 0 3rem;
+}
+main{
+    padding: 0 3rem;
+    font-size: 18px;
+}
+
+h1{
+    margin: 1rem 0;
+}
+.account,.intro,.app{
+    padding: 0 2rem;
+}
+.account{
+    font-family: monospace;
+    padding-top: 1rem;
+}
+.account div{
+    margin-bottom: .5rem ;
+}
+.account span{
+    font-size: 16px;
+    
+}
+.account button{
+    padding: .5rem 1rem;
+    font-size: 14px;
+    margin: .5rem 0;
+    border: none;
+    background: linear-gradient(to bottom, red,blue);
+    color: white;
+    border-radius: 5px;
+}
+
+@media screen and (max-width:767px) {
+    body{
+        padding: 0 .5rem;        
+    }
+    main{
+        padding: 0 1.5rem;
+    }
+}
+@media screen and (width:768px) {
+    body{
+        padding: 0 1.5rem;
+    }
+    main{
+        padding: 0 2rem;
+    }
+}

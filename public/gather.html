@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="This app uses the same sources as some of the popular tools in linux. It gathers information of a target website including subdomains, ip addresses or dns info and open ports">
+    <meta name="author" content="Bulumko Jele">
+    <meta name="index" content="follow">
+    <title>AutoRecon - Information gathering made easy</title>
+    <link rel="stylesheet" href="./static/css/header.css">
+    <link rel="stylesheet" href="./static/css/gather.css">
+</head>
+
+<body>
+    <header>
+        <div id="logo">AutoRecon</div>
+        <div id="navigation">
+            <nav>
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
+                <a>Logout</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div id="input">
+            <p>Enter targets via <span style="color: blue;">text</span> or <span style="color: red;">upload a
+                    list</span></p>
+            <div id="text">
+                <div>
+                    <textarea name="text-targets" id="text-targets" cols="30" rows="10" placeholder="Enter targets..."
+                        autocomplete="off"></textarea>
+                </div>
+                <div id="submit-text">
+                    <button id="text-submit">Find via Text</button>
+                </div>
+            </div>
+            <div>or</div>
+            <div id="upload">
+                <input type="file" name="upload-targets" id="upload">
+            </div>
+            <div id="submit-text">
+                <button id="file-submit">Find via File</button>
+            </div>
+        </div>
+
+        <div id="results">
+            <div id="container">
+                <p id="notice">Results will show here</p>
+                <div id="loading-animation " class="loader" hidden></div>
+                <div id="single-container">
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Results elements
+        const resultsContainer = document.getElementById('container')
+        const domainContainer = document.getElementById('single-container')
+
+        // Submit buttons
+        const textTargetsBtn = document.getElementById('text-submit')
+        const fileTargetsBtn = document.getElementById('file-submit')
+
+        // Inputs
+
+        const targetList = document.getElementById('text-targets')
+        const targetFile = document.getElementById('upload').value
+
+        // Token
+        const token = localStorage.getItem('token')
+        // Text targets query
+
+        textTargetsBtn.addEventListener('click', async () => {
+            const anime = document.querySelector('.loader')
+            const notice = document.getElementById('notice')
+
+
+
+            if (token) {
+
+                notice.hidden = true;
+                anime.hidden = false
+                const gatherInfo = await fetch('/gather', {
+                    method: 'POST',
+                    body: JSON.stringify({ targetList: targetList.value.split('\n') }),
+                    headers: {
+                        token: token,
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+
+                        resultsContainer.innerHTML = '';
+                        domainContainer.innerHTML = ''
+
+                        data.forEach(origin => {
+                            // Domain bold name
+                            const domain = document.createElement('h2');
+                            domain.textContent = origin.origin;
+                            domainContainer.appendChild(domain)
+                            
+                            const ul = document.createElement('ul')
+                            domainContainer.appendChild(ul)
+                            origin.subdomains.forEach(subdomain => {
+                                const li = document.createElement('li')
+                                li.style.listStyle = 'none'
+                                li.style.padding = '10px'
+                                li.style.margin = '10px'
+                                li.style.backgroundColor = 'gainsboro'
+
+                                const subdomainName = document.createElement('p')
+                                subdomainName.textContent = subdomain.url
+                                subdomainName.style.marginBottom = '.5rem'
+                                li.appendChild(subdomainName)
+                                ul.appendChild(li)
+                                const table = document.createElement('table')
+                                table.style.maxWidth = '500px'
+                                table.style.tableLayout = 'auto'
+                                table.style.border = '1px solid'
+                                table.style.margin = 'auto'
+                                li.appendChild(table)
+                                const tableRow = document.createElement('tr')
+                                const ipHeader = document.createElement('th')
+                                ipHeader.style.border = '1px solid'
+                                const portHeader = document.createElement('th')
+                                portHeader.style.border = '1px solid'
+                                ipHeader.textContent = 'IP Address'
+                                ipHeader.style.padding = '.5rem'
+                                ipHeader.style.textAlign = 'center'
+                                portHeader.textContent = 'Open Ports'
+                                portHeader.style.padding = '.5rem'
+                                portHeader.style.textAlign = 'center'
+                                tableRow.appendChild(ipHeader)
+                                tableRow.appendChild(portHeader)
+                                table.appendChild(tableRow)
+                                subdomain.ip.forEach(address => {
+                                    if (subdomain.ip.length == 0) {
+                                        table.style.display = 'none'
+
+
+                                    }
+                                    else {
+
+
+                                        const dataRow = document.createElement('tr')
+                                        dataRow.style.border = '1px solid'
+                                        const ipa = document.createElement('td')
+                                        ipa.style.border = '1px solid'
+                                        ipa.textContent = address
+                                        const port = document.createElement('td')
+                                        port.style.textAlign = 'center'
+                                        port.style.padding = '.5rem'
+                                        port.style.textWrap = 'wrap'
+                                        ipa.style.padding = '.5rem'
+                                        port.style.border = '1px solid'
+                                        ipa.style.textAlign = 'center'
+                                        port.textContent = (subdomain[address]['ports']).toString()
+                                        dataRow.appendChild(ipa)
+                                        dataRow.appendChild(port)
+
+                                        table.appendChild(dataRow)
+                                    }
+
+                                })
+                            })
+                            resultsContainer.appendChild(domainContainer)
+                        });
+                    });
+            }
+        });
+
+        fileTargetsBtn.addEventListener('click', async () => {
+            if (token) {
+                const gatherInfo = await fetch('/gather', {
+                    method: 'POST',
+                    body: JSON.stringify(targetFile),
+                    headers: {
+                        token: token,
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>

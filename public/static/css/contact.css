@@ -1,0 +1,85 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    padding: 0 3rem;
+    font-family: cursive;
+}
+main{
+    padding: 1rem 3rem;
+    font-size: 18px;
+}
+
+.details{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.contact-form,.social,.or{
+    width: fit-content;
+    padding: 1rem 1.5rem;
+}
+.sociallinks{
+    margin-top: 1rem;
+}
+.network{
+    display: flex;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+.icon{
+    width: 40px;
+    height: 40px;
+    margin: .5rem;
+    background-color: red;
+    border-radius: 5px;
+}
+form{
+    padding: 1rem;
+    background-color: rgb(179, 176, 176);
+    margin: 1rem 0 1rem 2rem;
+    border-radius: 5px;
+}
+input,textarea{
+    padding: .5rem;
+    width: 100%;
+    font-size: 16px;
+}
+.name-label,.email-label,.message-label{
+    padding: .5rem 0;
+    font-size: 18px;
+}
+@media screen and (max-width:767px) {
+    body{
+        padding: 0 .5rem;        
+    }
+    main{
+        padding: 0 1rem;
+    }
+    .contact-form,.social,.or{
+        width: fit-content;
+        padding: 1rem .5rem;
+    }
+    .contact-form{
+        
+    }
+    form{
+        padding: .5rem;
+        margin: 1rem 0 .5rem .5rem;
+    }
+}
+@media screen and (width:768px) {
+    body{
+        padding: 0 1.5rem;
+    }
+    main{
+        padding: 0 1rem;
+    }
+    form{
+        padding: 1rem;
+        
+        margin: 1rem 0 1rem .5rem;
+    }
+}

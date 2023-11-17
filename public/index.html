@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="This app uses the same sources as some of the popular tools in linux. It gathers information of a target website including subdomains, ip addresses or dns info and open ports">
+    <meta name="author" content="Bulumko Jele">
+    <meta name="index" content="follow">
+    <title>AutoRecon - Information gathering made easy</title>
+    <link rel="stylesheet" href="./static/css/header.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+</head>
+<body>
+    <header>
+        <div id="logo">AutoRecon</div>
+        <div id="navigation">
+            <nav>
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
+                <a id="nav-login">Login</a>
+            </nav>
+        </div>
+        <div id="menu" >
+            <img src="./static/icons/menu-burger.svg" id="menu-icon"  alt="" width="25">
+        </div>
+    </header>
+    <div id="menu-nav">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <button id="menu-login">Login</button>
+        <button id="menu-register">Register</button>
+    </div>
+    <main>
+        <h1><span>Information Gathering</span> made Easy</h1>
+        <ul>
+            <li>Find subdomains</li>
+            <li>Find IP addresses</li>
+            <li>Find open ports</li>
+        </ul>
+        <div id="button">
+            <button id="hero-register">Get Started</button>
+        </div>
+        <dialog>
+            <h2>
+                <span>Register</span>
+                <img src="./static/icons/cross.svg" id="register-close" alt="" width="20">
+            </h2>
+            <form action="/register" method="post">
+                <div>
+                    <label for="name">Username</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div>
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email">
+                </div>
+                <div>
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" name="password">
+                </div>
+                <div>
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" id="password2" name="password2">
+                </div>
+                <div>
+                    <input type="submit" value="Register">
+                </div>
+            </form>
+            <p>Already have an account? <button id="dialog-login"> Login </button></p>
+        </dialog>
+        <dialog id="login-dialog">
+            <h2>
+                <span>Login</span>
+                <img src="./static/icons/cross.svg" id="login-close" alt="" width="20">
+            </h2>
+            <form action="/login" method="post">
+                <div>
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email">
+                </div>
+                <div>
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password">
+                </div>
+                
+                <div>
+                    <input type="submit" value="Login">
+                </div>
+            </form>
+            <p>Don't have an account? <button id="dialog-register"> Register </button></p>
+        </dialog>
+    </main>
+
+    <script>
+        // Auth form buttons
+        const heroRegisterBtn = document.getElementById('hero-register')
+        const menuRegisterBtn = document.getElementById('menu-register')
+        const dialogRegisterBtn = document.getElementById('dialog-register')
+        const navLoginBtn = document.getElementById('nav-login')
+        const menuLoginBtn = document.getElementById('menu-login')
+        const dialogLoginBtn = document.getElementById('dialog-login')
+        // Auth forms
+        const registerDialog = document.getElementsByTagName('dialog')[0]
+        const loginDialog = document.getElementsByTagName('dialog')[1]
+        // Auth form button events
+        const regBtns = [heroRegisterBtn,menuRegisterBtn,dialogRegisterBtn]
+        for(let regBtn of regBtns){
+            regBtn.addEventListener('click',()=>{
+                if(loginDialog.hasAttribute('open')){
+                    loginDialog.removeAttribute('open')
+                }
+                registerDialog.show()
+            })
+        }
+        const logBtns = [navLoginBtn,menuLoginBtn,dialogLoginBtn]
+        for(let logBtn of logBtns){
+            logBtn.addEventListener('click',()=>{
+                if(registerDialog.hasAttribute('open')){
+                    registerDialog.removeAttribute('open')
+                }
+                loginDialog.show()
+            })
+        }
+        // Close form buttons
+        const closeBtns = [document.getElementById('register-close'), document.getElementById('login-close')]
+        for(let i = 0; i < closeBtns.length; i++){
+            closeBtns[i].addEventListener('click',()=>{
+                // Close dialog
+                closeBtns[i].parentElement.parentElement.removeAttribute('open')
+            })
+        }
+        // Menu button
+        const menuBtn = document.getElementById('menu-icon')
+        menuBtn.addEventListener('click',()=>{
+            
+        })
+
+        // Form submissions
+
+        const registerForm = document.getElementsByTagName('form')[0]
+        const LoginForm = document.getElementsByTagName('form')[1]
+
+        registerForm.addEventListener('submit', (e)=>{
+            e.preventDefault()
+            const name = document.getElementById('name').value
+            const email = document.getElementById('register-email').value
+            const password = document.getElementById('register-password').value
+            const password2 = document.getElementById('password2').value
+            if (name && email && password && password2){
+                if(password == password2){
+                    try {
+                        const regSubmit = fetch('/register',{
+                            method:'POST',
+                            body:JSON.stringify({
+                                name:name,
+                                email:email,
+                                password:password
+                            }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data=> {
+                            if(data.message == 'Successful registration!'){
+                                registerDialog.removeAttribute('open')
+                                loginDialog.setAttribute('open','open')
+                            }
+                        })
+                    } catch (error) {
+                        alert('Something went wrong!')
+                    }
+                }else{
+                    alert('Password must match!')
+                }
+            }
+            else{
+                alert('Fill all fields!')
+            }  
+        })
+
+        LoginForm.addEventListener('submit', (e)=>{
+            e.preventDefault()
+            const email = document.getElementById('login-email').value
+            const password = document.getElementById('login-password').value
+            if (email && password){
+                try {
+                    const regSubmit = fetch('/login',{
+                        method:'POST',
+                        body:JSON.stringify({
+                            email:email,
+                            password:password
+                        }),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data=> {
+                        if(data.message == 'Successful login!'){
+                            localStorage.setItem('token',data.token)
+                            location.href = '/gather'
+                        }
+                    })
+                } catch (error) {
+                    alert('Something went wrong!')
+                }
+            }
+            else{
+                alert('Fill all fields!')
+            }  
+        })
+    </script>
+</body>
+</html>
