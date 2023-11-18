@@ -25,13 +25,14 @@
             <img src="./static/icons/menu-burger.svg" id="menu-icon"  alt="" width="25">
         </div>
     </header>
-    <div id="menu-nav">
+    <dialog >
+        <h2><span>Menu</span><img src="./static/icons/cross.svg" id="small-nav" alt="" width="20"></h2>
         <a href="/">Home</a>
         <a href="/about">About</a>
         <a href="/contact">Contact</a>
         <button id="menu-login">Login</button>
         <button id="menu-register">Register</button>
-    </div>
+    </dialog>
     <main>
         <h1><span>Information Gathering</span> made Easy</h1>
         <ul>
@@ -50,19 +51,19 @@
             <form action="/register" method="post">
                 <div>
                     <label for="name">Username</label>
-                    <input type="text" id="name" name="name">
+                    <input type="text" id="name" name="name" required>
                 </div>
                 <div>
                     <label for="register-email">Email</label>
-                    <input type="email" id="register-email" name="email">
+                    <input type="email" id="register-email" name="email" required>
                 </div>
                 <div>
                     <label for="register-password">Password</label>
-                    <input type="password" id="register-password" name="password">
+                    <input type="password" id="register-password" name="password" required>
                 </div>
                 <div>
                     <label for="password2">Confirm Password</label>
-                    <input type="password" id="password2" name="password2">
+                    <input type="password" id="password2" name="password2" required>
                 </div>
                 <div>
                     <input type="submit" value="Register">
@@ -78,11 +79,11 @@
             <form action="/login" method="post">
                 <div>
                     <label for="login-email">Email</label>
-                    <input type="email" id="login-email" name="email">
+                    <input type="email" id="login-email" name="email" required>
                 </div>
                 <div>
                     <label for="login-password">Password</label>
-                    <input type="password" id="login-password" name="password">
+                    <input type="password" id="login-password" name="password" required>
                 </div>
                 
                 <div>
@@ -101,11 +102,14 @@
         const navLoginBtn = document.getElementById('nav-login')
         const menuLoginBtn = document.getElementById('menu-login')
         const dialogLoginBtn = document.getElementById('dialog-login')
+
+        const smallNavLogin = document.getElementById('menu-login')
+        const smallNavRegister = document.getElementById('menu-register')
         // Auth forms
-        const registerDialog = document.getElementsByTagName('dialog')[0]
-        const loginDialog = document.getElementsByTagName('dialog')[1]
+        const registerDialog = document.getElementsByTagName('dialog')[1]
+        const loginDialog = document.getElementsByTagName('dialog')[2]
         // Auth form button events
-        const regBtns = [heroRegisterBtn,menuRegisterBtn,dialogRegisterBtn]
+        const regBtns = [heroRegisterBtn,menuRegisterBtn,dialogRegisterBtn,smallNavRegister]
         for(let regBtn of regBtns){
             regBtn.addEventListener('click',()=>{
                 if(loginDialog.hasAttribute('open')){
@@ -114,7 +118,7 @@
                 registerDialog.show()
             })
         }
-        const logBtns = [navLoginBtn,menuLoginBtn,dialogLoginBtn]
+        const logBtns = [navLoginBtn,menuLoginBtn,dialogLoginBtn,smallNavLogin]
         for(let logBtn of logBtns){
             logBtn.addEventListener('click',()=>{
                 if(registerDialog.hasAttribute('open')){
@@ -132,11 +136,19 @@
             })
         }
         // Menu button
+        const nav = document.getElementsByTagName('dialog')[0]
         const menuBtn = document.getElementById('menu-icon')
         menuBtn.addEventListener('click',()=>{
+  
+            nav.show()
+            nav.classList.add('menu-nav')
+        })
+        const closeSmallMenu = document.getElementById('small-nav')
+            closeSmallMenu.addEventListener('click',()=>{
+                nav.style.display = 'none'
             
         })
-
+    
         // Form submissions
 
         const registerForm = document.getElementsByTagName('form')[0]

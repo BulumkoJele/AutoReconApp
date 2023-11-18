@@ -80,15 +80,23 @@ dialog h2{
 #login-dialog{
     min-height: 50vh;
 }
-#menu{
-    display: none;
+#hero-register{
+    padding: .5rem 1rem;
+    background-color: red;
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    border-radius: 8px;
 }
-#menu-nav{
+#menu{
     display: none;
 }
 @media screen and (max-width:767px) {
     body{
         padding: 0 1.5rem;
+    }
+    dialog{
+        -webkit-padding-start: .5rem;
     }
     #navigation{
         display: none;
@@ -97,21 +105,41 @@ dialog h2{
         display: block;
         align-content: end;
     }
-    #menu-nav{
+    header+dialog{
+        width: 250px;
+        padding: 0 20px;
+    }
+    .menu-nav{
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         min-height: 70vh;
         font-size: 1.3rem;
         background-color: gainsboro;
-        display: none;
+        
     }
-    #menu-nav a{
+    .menu-nav a{
         color: black;
         text-align: center;
     }
+    .menu-nav button{
+        padding: .5rem;
+        font-weight: 700;
+        color: white;
+        border: none;
+        border-radius: .3rem;
+    }
+    .menu-nav button:first-of-type{
+        background-color: orangered;
+        
+        
+    }
+    .menu-nav button:nth-of-type(2){
+        background-color: navy;
+
+    }
     main{
-        padding: 0 1.5rem;
+        padding: 0 1rem;
     }
     
 }

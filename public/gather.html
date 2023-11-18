@@ -18,10 +18,8 @@
         <div id="logo">AutoRecon</div>
         <div id="navigation">
             <nav>
-                <a href="/">Home</a>
-                <a href="/about">About</a>
-                <a href="/contact">Contact</a>
-                <a>Logout</a>
+                
+                <a id="logout">Logout</a>
             </nav>
         </div>
     </header>
@@ -32,7 +30,7 @@
             <div id="text">
                 <div>
                     <textarea name="text-targets" id="text-targets" cols="30" rows="10" placeholder="Enter targets..."
-                        autocomplete="off"></textarea>
+                        autocomplete="off" required></textarea>
                 </div>
                 <div id="submit-text">
                     <button id="text-submit">Find via Text</button>
@@ -40,7 +38,7 @@
             </div>
             <div>or</div>
             <div id="upload">
-                <input type="file" name="upload-targets" id="upload">
+                <input type="file" name="upload-targets" id="upload" required>
             </div>
             <div id="submit-text">
                 <button id="file-submit">Find via File</button>
@@ -75,6 +73,11 @@
         const token = localStorage.getItem('token')
         // Text targets query
 
+        const logout = document.getElementById('logout')
+        logout.addEventListener('click', ()=>{
+            localStorage.removeItem('token')
+            location.href = '/'
+        })
         textTargetsBtn.addEventListener('click', async () => {
             const anime = document.querySelector('.loader')
             const notice = document.getElementById('notice')

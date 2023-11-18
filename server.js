@@ -64,6 +64,7 @@ app.post('/login',async (req, res)=>{
 })
 
 app.get('/gather', (req, res)=>{
+    
     res.sendFile(__dirname+'/public/'+'gather.html')
 })
 app.post('/gather', async (req, res)=>{
